@@ -13,7 +13,7 @@ export default function MyStoreStack () {
      screenOptions={{
         title: "Agregar nuevo producto",
         headerStyle: {
-         // background:"#128C7E"
+          backgroundColor:"#128C7E"
         },
         headerTintColor: "#fff"
       }}

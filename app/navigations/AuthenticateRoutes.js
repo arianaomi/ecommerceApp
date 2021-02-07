@@ -8,6 +8,8 @@ import  { Icon } from 'react-native-elements'
 import StoreStack from './StoreStack'
 import ProfileStack from './ProfileStack'
 import MyStoreStack from './MyStoreStack'
+// My components 
+import ShopButton from '../components/ShopButton'
 
 const Tab = createBottomTabNavigator()
 const Drawer = createDrawerNavigator()
@@ -18,7 +20,7 @@ const TabBar = () => {
       initialRouteName='store'
       tabBarOptions={{
         inactiveTintColor: "#ffffff",
-        activeTintColor: "#ff",
+        activeTintColor: "#fff",
         style: {
           borderRadius: 60,
           alignItems: 'center',
@@ -39,12 +41,18 @@ const TabBar = () => {
       <Tab.Screen  
         name='myStore'
         component={MyStoreStack}
-        options={{title: ""}}
+        options={{
+          title: "",
+          tabBarIcon: () => <ShopButton />
+      }}
       />
       <Tab.Screen  
         name='profile'
         component={ProfileStack}
-        options={{title: "Mi perfil"}}
+        options={{
+          title: "Mi perfil",
+          
+        }}
       />
     </Tab.Navigator>
   )

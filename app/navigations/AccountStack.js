@@ -15,7 +15,7 @@ export default function AccountStack() {
         component={ConfirmPhone}
         option={{
           title: 'Confirma tu número',
-          //headerStyle: { background: '#128C7E'},
+          headerStyle: { background: '#128C7E'},
           headerTintColor: '#fff'
         }}
       />
@@ -24,7 +24,7 @@ export default function AccountStack() {
         component={SendConfirmPhone}
         option={{
           title: 'Confirma tu número (send)',
-          //headerStyle: { background: '#128C7E'},
+          headerStyle: { background: '#128C7E'},
           headerTintColor: '#fff'
         }}
       />
