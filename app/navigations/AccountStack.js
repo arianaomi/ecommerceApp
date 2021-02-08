@@ -1,5 +1,6 @@
 
 import React from 'react'
+import { NavifationContainer, NavigationContainer } from '@react-navigation/native'
 import  { createStackNavigator } from '@react-navigation/stack'
 
 import ConfirmPhone from '../screens/Account/ConfirmPhone'
@@ -9,7 +10,8 @@ const Stack = createStackNavigator() // instanciando ek stack
 
 export default function AccountStack() {
   return (
-    <Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator>
        <Stack.Screen 
         name='confirmPhone'
         component={ConfirmPhone}
@@ -18,7 +20,7 @@ export default function AccountStack() {
           headerStyle: { background: '#128C7E'},
           headerTintColor: '#fff'
         }}
-      />
+        />
        <Stack.Screen 
         name='sendConfirmPhone'
         component={SendConfirmPhone}
@@ -27,7 +29,8 @@ export default function AccountStack() {
           headerStyle: { background: '#128C7E'},
           headerTintColor: '#fff'
         }}
-      />
-    </Stack.Navigator>
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }

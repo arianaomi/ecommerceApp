@@ -6,26 +6,32 @@ import { isEmpty } from 'lodash'
 import * as firebase from 'firebase'
 // utils 
 import  { validationEmail }  from '../utils/validationEmail'
-import { loginValidation } from '../utils/actions'
+// My components
+import Loading from './Loading'
 
 export default function LoginForm({toastRef}) {
+ 
 
   const navigation = useNavigation()
 
   const [email, setEmail] = useState('')
   const [password,setPassword] = useState('')
+  const [showIcon, setShowIcon] =  useState(true)
+  const [loading, setLoading] = useState(false)
 
-  loginValidation()
-
+  
   const loginValidations = () => {
     if(isEmpty(email) || isEmpty(password)) {
       toastRef.current.show("Debe ingresar los valores de email y password")
     } else if (!validationEmail(email)) {
       toastRef.current.show("Correo invalido")
     }else {
+      setLoading(true)
       firebase.auth().signInWithEmailAndPassword(email,password)
       .then(()=> {
-        console.log('todo bien')
+        setLoading(false)
+        toastRef.current.show("Inicio de sesión exitoso")
+        console.log(firebase.auth().currentUser)
       })
       .catch(error => {
         console.log(error)
@@ -68,11 +74,18 @@ export default function LoginForm({toastRef}) {
           name: 'security',
           color: '#128C7E',
         }}
+        secureTextEntry ={ showIcon? true: false}
+        value={password}
+        leftIcon={{
+          type: 'material-community',
+          name: 'security',
+          color: '#128C7E',
+        }}
         rightIcon={{
           type: 'material-community',
-          name: 'eye-outline',
+          name: !showIcon? 'eye-off-outline':'eye-outline',
           color: '#128C7E',
-          onPress: () => alert('hola')
+          onPress: () => setShowIcon(!showIcon)
 
         }}
         onChangeText={text => setPassword(text)}
@@ -117,6 +130,7 @@ export default function LoginForm({toastRef}) {
           /> 
         </TouchableOpacity>
       </View>
+      <Loading isVisible={loading} text='Espere' />
     </View>
   )
 }

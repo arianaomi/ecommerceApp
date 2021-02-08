@@ -6,6 +6,8 @@ import { isEmpty, size } from 'lodash'
 import * as firebase from 'firebase'
 // utils 
 import  { validationEmail }  from '../utils/validationEmail'
+// My components 
+import Loading from './Loading'
 
 export default function RegisterForm({toastRef}) {
   const navigation = useNavigation()
@@ -13,8 +15,9 @@ export default function RegisterForm({toastRef}) {
   const [email, setEmail] = useState('')
   const [password,setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [showIcon, setShowIcon] = useState (false)
-  const [showIconConfirm, setShowIconConfirm] = useState (false)
+  const [showIcon, setShowIcon] = useState (true)
+  const [showIconConfirm, setShowIconConfirm] = useState (true)
+  const [loading, setLoading] =  useState(false)
 
   const createAccount = () => {
     if(isEmpty(email) || isEmpty(password) || isEmpty(confirmPassword)) {
@@ -26,9 +29,12 @@ export default function RegisterForm({toastRef}) {
     } else if( size(password) < 6){
       toastRef.current.show("Las contraseñas deben tener al menos 6 caracteres")
     }else {
-     firebase.auth().signInWithCredential(email,password)
+      setLoading(true)
+     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(()=> {
         console.log('todo bien')
+        toastRef.current.show("Usuario creado")
+        setLoading(false)
       })
       .catch(error => {
         console.log(error)
@@ -74,7 +80,7 @@ export default function RegisterForm({toastRef}) {
         }}
         rightIcon={{
           type: 'material-community',
-          name: showIcon? 'eye-off-outline':'eye-outline',
+          name: !showIcon? 'eye-off-outline':'eye-outline',
           color: '#128C7E',
           onPress: () => setShowIcon(!showIcon)
 
@@ -84,7 +90,7 @@ export default function RegisterForm({toastRef}) {
       <Input  
         placeholder='Repetir contraseña'
         containerStyle={styles.input}
-        secureTextEntry={ showIconConfirm? true: false}
+        secureTextEntry={ showIconConfirm? true : false}
         value={confirmPassword}
         leftIcon={{
           type: 'material-community',
@@ -93,7 +99,7 @@ export default function RegisterForm({toastRef}) {
         }}
         rightIcon={{
           type: 'material-community',
-          name: showIconConfirm? 'eye-off-outline':'eye-outline',
+          name: !showIconConfirm? 'eye-off-outline':'eye-outline',
           color: '#128C7E',
           onPress: () => setShowIconConfirm(!showIconConfirm)
 
@@ -112,6 +118,9 @@ export default function RegisterForm({toastRef}) {
         buttonStyle={{backgroundColor: '#128C7E'}}
         onPress={()=> navigation.goBack()}
       />
+
+      { loading && <Loading text ='Creando Cuenta' isVisible />}
+
       
     </View>
   )
