@@ -24,3 +24,25 @@ export const phoneValidation = ( setPhoneAuth) => {
   })
 }
 
+
+export const sendAutConfirmPhone = async (phone, recaptcha) => {
+  let verificationId = ''
+
+  await firebase.auth().currentUser.reauthenticateWithPhoneNumber(phone, recaptcha.current)
+  .then( response => {
+    verificationId = response.verificationId
+    console.log('llegue')
+  })
+  .catch( error => console.log(error) )
+
+  return  verificationId
+}
+
+export const confirmCode = async (verificationId, code) => {
+  let result = false 
+  const credentials = firebase.auth.phoneAuthProvider.credentials( verificationId, code)
+  await firebase.auth().currentUser.linkWithCredential(credentials)
+  .then (response => result = true)
+  .catch (error => console.log(error))
+  return result
+}

@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { NavifationContainer, NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import  { createStackNavigator } from '@react-navigation/stack'
 
 import ConfirmPhone from '../screens/Account/ConfirmPhone'
