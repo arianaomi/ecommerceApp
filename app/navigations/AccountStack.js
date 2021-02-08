@@ -13,19 +13,19 @@ export default function AccountStack() {
     <NavigationContainer>
       <Stack.Navigator>
        <Stack.Screen 
-        name='confirmPhone'
-        component={ConfirmPhone}
-        option={{
-          title: 'Confirma tu número',
-          headerStyle: { background: '#128C7E'},
-          headerTintColor: '#fff'
-        }}
-        />
-       <Stack.Screen 
         name='sendConfirmPhone'
         component={SendConfirmPhone}
         option={{
           title: 'Confirma tu número (send)',
+          headerStyle: { backgroundColor: '#128C7E'},
+          headerTintColor: '#fff'
+        }}
+        />
+        <Stack.Screen 
+        name='confirmPhone'
+        component={ConfirmPhone}
+        option={{
+          title: 'Confirma tu número',
           headerStyle: { background: '#128C7E'},
           headerTintColor: '#fff'
         }}
