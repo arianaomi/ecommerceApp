@@ -25,7 +25,7 @@ export const phoneValidation = ( setPhoneAuth) => {
 }
 
 
-export const sendAutConfirmPhone = async (phone, recaptcha) => {
+export const sendAuthConfirmPhone = async (phone, recaptcha) => {
   let verificationId = ''
 
   await firebase.auth().currentUser.reauthenticateWithPhoneNumber(phone, recaptcha.current)

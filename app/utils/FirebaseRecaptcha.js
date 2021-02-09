@@ -10,7 +10,6 @@ export default function FirebaseRecaptcha({ recaptchaVerifier}) {
       title= 'Confirma que no eres un bot'
       cancelLabel='x'
       firebaseConfig={Constants.manifest.extra.firebase}
-
     />
   )
 }
