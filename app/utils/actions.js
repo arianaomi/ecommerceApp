@@ -40,7 +40,8 @@ export const sendAuthConfirmPhone = async (phone, recaptcha) => {
 
 export const confirmCode = async (verificationId, code) => {
   let result = false 
-  const credentials = firebase.auth.phoneAuthProvider.credentials( verificationId, code)
+  const credentials = firebase.auth.PhoneAuthProvider.credential( verificationId, code)
+
   await firebase.auth().currentUser.linkWithCredential(credentials)
   .then (response => result = true)
   .catch (error => console.log(error))
