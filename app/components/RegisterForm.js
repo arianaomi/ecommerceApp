@@ -38,6 +38,7 @@ export default function RegisterForm({toastRef}) {
       })
       .catch(error => {
         console.log(error)
+        setLoading(false)
         toastRef.current.show("Upps algo salio mal")
       })
     }

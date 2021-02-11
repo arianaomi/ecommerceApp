@@ -1,26 +1,39 @@
 import React, {useState, usRef} from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Alert } from 'react-native'
 import CodeInput from 'react-native-code-input/'
 import { useNavigation } from '@react-navigation/native'
 import Loading from '../../components/Loading'
-import { confirmCode } from '../../utils/actions'
-
-
+import { confirmCode, getToken, getUser, addSpecificRegister } from '../../utils/actions'
 
 export default function ConfirmPhone({route}) {
   const {verificationId} = route.params
-  console.log(verificationId)
 
   const [loading, setLoading] = useState(false) 
 
   const confirmSMSCode = async (code) => {
+    setLoading(true)
     const result = await confirmCode(verificationId, code)
-    console.log(result)
-    // Extraer la informacion del usuario
-    // Obtner el token - pushnotification
-    // Hacer las validaciones y confirmar autenticación
+    if(result) {
+      const token =await getToken() 
+  
+      const { displayName, email, phoneNumber, photoURL, providerId, uid} = getUser()
+  
+      const specificRegister = await addSpecificRegister('User',uid,{
+        token,
+        displayName,
+        photoURL,
+        email,
+        creationDate: new Date()
+      })
+      setLoading(false)
+    }else {
+      setLoading(false)
+      Alert.alert("Error", "Validar el código introducido",[{
+        style: 'default',
+        text: 'entendido'
+      }])
+    }
   }
-
   return (
     <View style={styles.container}>
       <Image  
