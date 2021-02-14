@@ -6,6 +6,9 @@ import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions"
 import 'firebase/firestore'
+import uuid from 'random-uuid-v4'
+import { map } from 'lodash' 
+import  { convertirFicheroBlob } from '../utils/validationEmail'
 
 
 const db = firebase.firestore(firebaseApp)
@@ -117,10 +120,45 @@ export const addSpecificRegister = async (collection, doc, data) => {
     data: null
   }
   await db.collection(collection).doc(doc)
-  .set(data)
+  .set(data, {merge: true}) // merge nos permite actlaizar datos sin necesidad de hacer un put o patch 
   .then(response => result.statusresponse = true)
   .catch(error => {
     result.error = error
   })
+  return result
+}
 
+export const subirImagenesBatch = async ( imagenes, ruta ) => {
+
+  // subir imagene necesitamos convertir las imagenes a blob
+  const imagenesURL = []
+
+  await Promise.all(
+    map(imagenes, async (image) =>{
+      const blob = await convertirFicheroBlob(image)
+      const ref = firebase.storage().ref(ruta).child(uuid()) //ruta en el storage
+
+      await ref.put(blob).then( async(result) => {
+        await firebase
+        .storage()
+        .ref(`${ruta}/${result.metadata.name}`)
+        .getDownloadURL()
+        .then((imagenUrl) => {
+          imagenesURL.push(imagenUrl)
+        })
+      })
+    })
+  )
+
+  return imagenesURL
+}
+
+
+export const actualizarPerfil = async (data) => {
+  let respuesta = false;
+  await firebase.auth().currentUser.updateProfile(data)
+  .then( response => {
+    respuesta = true
+  })
+  return respuesta
 }
