@@ -6,6 +6,10 @@ import  { cargarImagenesxAspecto } from '../../utils/validationEmail'
 import { subirImagenesBatch, addSpecificRegister, actualizarPerfil, getUser } from '../../utils/actions'
 import Loading from '../../components/Loading'
 
+//my componente
+
+import CustomInput from  '../../components/CustomInput'
+
 export default function Profile() {
   const usuario = getUser()
   //console.log(usuario)
@@ -13,9 +17,15 @@ export default function Profile() {
   const [imagenPerfil, setImagenPerfil] = useState('')
   const [loading, setLoading] = useState(false)
   //Estados para cambiar los datos del usuario
+  const [displayName, setDisplayName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [email, setEmail] = useState('')
 
   useEffect (() => {
     setImagenPerfil(usuario.photoURL)
+    setDisplayName(usuario.displayName)
+    setPhoneNumber(usuario.phoneNumber)
+    setEmail(usuario.email)
    
   },[])
   
@@ -30,6 +40,7 @@ export default function Profile() {
         setImagenPerfil={setImagenPerfil}
         setLoading={setLoading}
       />
+      <FormDatos />
       <Loading isVisible={loading} text='Espere'/>
     </View>
   )
@@ -87,6 +98,16 @@ function HeaderAvatar ({usuario, imagenPerfil, setImagenPerfil, setLoading, }) {
       >
          <Avatar.Accessory onPress={changePhoto} style={{width:30, height:30}}/>
       </Avatar>
+    </View>
+  )
+}
+
+function FormDatos (){
+  return (
+    <View>
+     <Text>
+       <CustomInput label='label'/>
+     </Text>
     </View>
   )
 }
