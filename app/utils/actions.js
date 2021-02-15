@@ -68,7 +68,7 @@ export const confirmCode = async (verificationId, code) => {
   let result = false 
   const credentials = firebase.auth.PhoneAuthProvider.credential( verificationId, code)
 
-  await firebase.auth().currentUser.linkWithCredential(credentials)
+  await firebase.auth().currentUser.linkWithCredential(credentials) //unir las credenciales en firebase
   .then (response => result = true)
   .catch (error => console.log(error))
   return result
@@ -162,3 +162,47 @@ export const actualizarPerfil = async (data) => {
   })
   return respuesta
 }
+
+
+export const reautenticar = async (verificacionId, code) => {
+  let response = {statusresponse: false}
+
+  const credenciales = new firebase.auth.PhoneAuthProvider.credential(verificacionId,code)
+
+  await firebase
+  .auth()
+  .currentUser.reauthenticateWithCredential(credenciales)
+  .then( resultado => response.statusresponse = true)
+  .catch(error => console.log(error))
+
+  return response
+
+}
+
+
+// actualizar el email
+
+export const actualizarEmailFirebase = async (email) => {
+  let resposne = {statusresponse: false}
+  await firebase.auth().currentUser.updateEmail(email)
+  .then(respuesta => response.statusresponse = true)
+  .catch( err => resposne.statusresponse = false)
+
+  return resposne
+
+}
+
+export const actualizarTelefono = async (verificationId, code) => {
+  let response = { statusresponse: false };
+  // console.log('telefono')
+  // console.log(verificationId);
+  // console.log(code);
+
+   const credenciales = new firebase.auth.PhoneAuthProvider.credential(
+    verificationId,code );
+
+   
+   await firebase.auth().currentUser.updatePhoneNumber(credenciales).then((resultado) => (response.statusresponse = true)).catch((err) => { console.log(err); });
+
+   return response;
+};
