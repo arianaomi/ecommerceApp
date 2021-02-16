@@ -66,6 +66,7 @@ export default function AddProduct() {
        <Text style={styles.txtLabel}> Cargar imágenes</Text>
        <SubirImagenes imagenes={imagenes} setImagenes={setImagenes}/>
        <Text style={styles.txtLabel}> Asignar categoria</Text>
+       <Botoneras categoria={categoria} setCategoria={setCategoria} />
        <Button 
         title='Agregar nuevo producto'
         buttonStyle={styles.btnAddNew}
@@ -137,6 +138,66 @@ function SubirImagenes ({imagenes, setImagenes}) {
   )
 }
 
+// componente de Categorias
+
+function Botoneras ({ categoria, setCategoria}) {
+  return (
+    <View style={styles.botonera}>
+      <TouchableOpacity
+        style={styles.btnCategoria}
+        onPress={()=>setCategoria('libros')}
+      >
+        <Icon
+          type='material-community'
+          name='book-open'
+          size={24}
+          color={categoria === 'libros' ? '#125C7E' : '#757575'}
+          reverse
+        /> 
+        <Text>Libros</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.btnCategoria}
+        onPress={()=>setCategoria('ideas')}
+      >
+        <Icon
+          type='material-community'
+          name='lightbulb-on-outline'
+          size={24}
+          color={categoria === 'ideas' ? '#125C7E' : '#757575'}
+          reverse
+        /> 
+        <Text>Ideas</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.btnCategoria}
+        onPress={()=>setCategoria('articulos')}
+      >
+        <Icon
+          type='material-community'
+          name='cart-arrow-down'
+          size={24}
+          color={categoria === 'articulos' ? '#125C7E' : '#757575'}
+          reverse
+        /> 
+        <Text>Artículos</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.btnCategoria}
+        onPress={()=>setCategoria('servicios')}
+      >
+        <Icon
+          type='material-community'
+          name='account'
+          size={24}
+          color={categoria === 'servicios' ? '#125C7E' : '#757575'}
+          reverse
+        /> 
+        <Text>Servicios</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -189,5 +250,14 @@ const styles = StyleSheet.create({
     width: 100,
     height: 150,
     marginRight: 10
+  },
+  botonera:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  btnCategoria: {
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
