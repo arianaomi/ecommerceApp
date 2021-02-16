@@ -206,3 +206,20 @@ export const actualizarTelefono = async (verificationId, code) => {
 
    return response;
 };
+
+//subir productos a firebase
+
+export const addRegistro = async (coleccion, data) => {
+  const result = { 
+    error: "",
+    statusresponse: false,
+    data: null
+  }
+  await db.collection(coleccion)
+  .add(data)
+  .then(response => result.statusresponse = true)
+  .catch(error => {
+    result.error = error
+  })
+  return result
+}

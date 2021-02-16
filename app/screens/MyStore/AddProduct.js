@@ -5,6 +5,7 @@ import { map, size, filter, isEmpty} from 'lodash'
 import  { useNavigation } from '@react-navigation/native'
 import { KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import { cargarImagenesxAspecto } from '../../utils/validationEmail'
+import  { subirImagenesBatch, addRegistro, getUser } from '../../utils/actions'
 
 // My components 
 import Loading from '../../components/Loading'
@@ -15,12 +16,91 @@ export default function AddProduct() {
   const [precio, setPrecio] = useState('')
   const [imagenes, setImagenes] = useState([])
   const [categoria, setCategoria] = useState('')
-  const [errores, setErrores] = useState([])
+  const [errores, setErrores] = useState({})
   const [rating, setRating] = useState(5)
+
+  const [loading, setLoading] = useState(false)
 
   const btnRef = useRef()
 
   const navigation = useNavigation()
+
+  const addProducto = async () => {
+    setErrores({})
+    console.log(imagenes)
+    if(isEmpty(titulo)){
+      setErrores({ 
+        titulo: 'El campo titulo es obligatorio' 
+      })
+    }else if( isEmpty(descripcion)){
+      setErrores({ 
+        descripcion: 'El campo es obligatorio'
+      })
+    // }else if (parseFloat(precio) > 0 )  {
+    //   setErrores({ precio: 'El precio debe ser mayor a 0' })
+    // }else if ( isEmpty(categoria) ) {
+    //   Alert.alert(
+    //     'Seleccione una categoria',
+    //     {
+    //       style:'cancel',
+    //       text:'Entendido'
+    //     }
+    //   )
+    // }else if (imagenes.length === 0){
+    //   Alert.alert(
+    //     'Seleccione una imagen',
+    //     {
+    //       style:'cancel',
+    //       text:'Entendido'
+    //     }
+    //   )
+     }else {
+       setLoading(true)
+       const imagenerUrl = await subirImagenesBatch(imagenes, 'imagenesProductos')
+       console.log(imagenerUrl)
+       const producto = {
+         titulo,
+         descripcion,
+         precio,
+         usuario: getUser().uid,
+         imagenes: imagenes,
+         status: 1,
+         fechacreacion: new Date(),
+         rating,
+         categoria
+
+       }
+       const registrarProduct = await addRegistro('Productos', producto)
+       if(registrarProduct.statusresponse){
+         setLoading(false)
+         Alert.alert(
+           'Registro exitoso',
+           'El producto se ha registrado correctamente'
+           [
+             {
+               text:'aceptar',
+               style:'cancel',
+               onPress: () => navigation.navigate('myStore')
+             }
+           ]
+         )
+       }else {
+        setLoading(false)
+        Alert.alert(
+          'Registro fallido',
+          'Ha ocurrido un error'
+          [
+            {
+              text:'aceptar',
+              style:'cancel',
+              
+            }
+          ]
+        )
+       }
+      
+    }
+  }
 
   return (
     <KeyboardAwareScrollView
@@ -71,7 +151,9 @@ export default function AddProduct() {
         title='Agregar nuevo producto'
         buttonStyle={styles.btnAddNew}
         ref={btnRef}
+        onPress={addProducto}
        />
+       <Loading isVisible={loading} text='favor espere'/>
     </KeyboardAwareScrollView>
   )
 }
@@ -112,7 +194,7 @@ function SubirImagenes ({imagenes, setImagenes}) {
             type='material-community'
             color='#7a7a7a'
             containerStyle={styles.containerIcon}
-            onPress={async () => {
+            onPress={async (imagen) => {
               const resultado = await cargarImagenesxAspecto([1,1])
               if(resultado.status){
                 setImagenes([...imagenes, resultado.imagen])
