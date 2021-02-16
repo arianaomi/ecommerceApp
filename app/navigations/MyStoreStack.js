@@ -4,7 +4,7 @@ import  { createStackNavigator } from '@react-navigation/stack'
 
 import EditProduct from '../screens/MyStore/EditProduct'
 import MyStore from '../screens/MyStore/MyStore'
-
+import AddProduct from '../screens/MyStore/AddProduct'
 const Stack = createStackNavigator() // instanciando ek stack
 
 export default function MyStoreStack () {
@@ -22,6 +22,15 @@ export default function MyStoreStack () {
         name='myStore' 
         component={MyStore}
         options={{title: "Mi tienda"}}
+      />
+       <Stack.Screen
+        name='addProduct' 
+        component={AddProduct}
+        options={{
+          title: "Agregar nuevo producto",
+          headerStyle:{backgroundColor:"#128C7E"},
+          headerTintColor: "#fff"
+      }}
       />
       <Stack.Screen
         name='editProduct' 

@@ -3,7 +3,7 @@ import React from 'react'
 import  { createStackNavigator } from '@react-navigation/stack'
 
 import Store from '../screens/Store/Store'
-import AddProduct from '../screens/Store/AddProduct'
+
 import Contact from '../screens/Store/Contact'
 import MessageList from '../screens/Store/MessageList'
 import Details from '../screens/Store/Details'
@@ -18,15 +18,7 @@ export default function StoreStack () {
         component={Store}
         options={{headerShown:false}}
       />
-      <Stack.Screen
-        name='addProduct' 
-        component={AddProduct}
-        options={{
-          title: "Agregar nuevo producto",
-          headerStyle:{backgroundColor:"#128C7E"},
-          headerTintColor: "#fff"
-      }}
-      />
+      
        <Stack.Screen
         name='details' 
         component={Details}
