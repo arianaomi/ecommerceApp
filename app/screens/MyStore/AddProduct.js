@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react'
 import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native'
-import { Input, Image, Button, Icon, Avatar, AirbnbRating} from 'react-native-elements'
-import { map, size, filter, isEmpty} from 'lodash'
-import  { useNavigation } from '@react-navigation/native'
-import { KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
+import { Input, Image, Button, Icon, Avatar, AirbnbRating } from 'react-native-elements'
+import { map, size, filter, isEmpty } from 'lodash'
+import { useNavigation } from '@react-navigation/native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { cargarImagenesxAspecto } from '../../utils/validationEmail'
-import  { subirImagenesBatch, addRegistro, getUser } from '../../utils/actions'
+import { subirImagenesBatch, addRegistro, getUser } from '../../utils/actions'
 
 // My components 
 import Loading from '../../components/Loading'
@@ -28,77 +28,77 @@ export default function AddProduct() {
   const addProducto = async () => {
     setErrores({})
     console.log(imagenes)
-    if(isEmpty(titulo)){
-      setErrores({ 
-        titulo: 'El campo titulo es obligatorio' 
+    if (isEmpty(titulo)) {
+      setErrores({
+        titulo: 'El campo titulo es obligatorio'
       })
-    }else if( isEmpty(descripcion)){
-      setErrores({ 
+    } else if (isEmpty(descripcion)) {
+      setErrores({
         descripcion: 'El campo es obligatorio'
       })
-    // }else if (parseFloat(precio) > 0 )  {
-    //   setErrores({ precio: 'El precio debe ser mayor a 0' })
-    // }else if ( isEmpty(categoria) ) {
-    //   Alert.alert(
-    //     'Seleccione una categoria',
-    //     {
-    //       style:'cancel',
-    //       text:'Entendido'
-    //     }
-    //   )
-    // }else if (imagenes.length === 0){
-    //   Alert.alert(
-    //     'Seleccione una imagen',
-    //     {
-    //       style:'cancel',
-    //       text:'Entendido'
-    //     }
-    //   )
-     }else {
-       setLoading(true)
-       const imagenerUrl = await subirImagenesBatch(imagenes, 'imagenesProductos')
-       console.log(imagenerUrl)
-       const producto = {
-         titulo,
-         descripcion,
-         precio,
-         usuario: getUser().uid,
-         imagenes: imagenes,
-         status: 1,
-         fechacreacion: new Date(),
-         rating,
-         categoria
+      // }else if (parseFloat(precio) > 0 )  {
+      //   setErrores({ precio: 'El precio debe ser mayor a 0' })
+      // }else if ( isEmpty(categoria) ) {
+      //   Alert.alert(
+      //     'Seleccione una categoria',
+      //     {
+      //       style:'cancel',
+      //       text:'Entendido'
+      //     }
+      //   )
+      // }else if (imagenes.length === 0){
+      //   Alert.alert(
+      //     'Seleccione una imagen',
+      //     {
+      //       style:'cancel',
+      //       text:'Entendido'
+      //     }
+      //   )
+    } else {
+      setLoading(true)
+      const imagenerUrl = await subirImagenesBatch(imagenes, 'imagenesProductos')
+      console.log(imagenerUrl)
+      const producto = {
+        titulo,
+        descripcion,
+        precio,
+        usuario: getUser().uid,
+        imagenes: imagenes,
+        status: 1,
+        fechacreacion: new Date(),
+        rating,
+        categoria
 
-       }
-       const registrarProduct = await addRegistro('Productos', producto)
-       if(registrarProduct.statusresponse){
-         setLoading(false)
-         Alert.alert(
-           'Registro exitoso',
-           'El producto se ha registrado correctamente'
-           [
-             {
-               text:'aceptar',
-               style:'cancel',
-               onPress: () => navigation.navigate('myStore')
-             }
-           ]
-         )
-       }else {
+      }
+      const registrarProduct = await addRegistro('Productos', producto)
+      if (registrarProduct.statusresponse) {
+        setLoading(false)
+        Alert.alert(
+          'Registro exitoso',
+          'El producto se ha registrado correctamente'
+          [
+          {
+            text: 'aceptar',
+            style: 'cancel',
+            onPress: () => navigation.navigate('myStore')
+          }
+          ]
+        )
+      } else {
         setLoading(false)
         Alert.alert(
           'Registro fallido',
           'Ha ocurrido un error'
           [
-            {
-              text:'aceptar',
-              style:'cancel',
-              
-            }
+          {
+            text: 'aceptar',
+            style: 'cancel',
+
+          }
           ]
         )
-       }
-      
+      }
+
     }
   }
 
@@ -106,29 +106,29 @@ export default function AddProduct() {
     <KeyboardAwareScrollView
       style={styles.container}
     >
-      <View 
+      <View
         style={{
-          borderBottomColor:'#25D366', 
-          borderBottomWidth: 2, 
-          width: 100, 
-          marginTop: 20, 
-          alignSelf:'center'
+          borderBottomColor: '#25D366',
+          borderBottomWidth: 2,
+          width: 100,
+          marginTop: 20,
+          alignSelf: 'center'
         }}
       />
-      <Input 
+      <Input
         placeholder='titulo'
         onChangeText={text => setTitulo(text)}
         inputStyle={styles.input}
         errorMessage={errores.titulo}
       />
-      <Input 
+      <Input
         placeholder='Descripcion'
         onChangeText={text => setDescripcipn(text)}
         inputStyle={styles.textarea}
         errorMessage={errores.descripcion}
         multiline
       />
-      <Input 
+      <Input
         placeholder='Precio'
         onChangeText={text => setPrecio(parseFloat(text))}
         inputStyle={styles.input}
@@ -136,35 +136,35 @@ export default function AddProduct() {
         keyboardType='name-phone-pad'
       />
       <Text style={styles.txtLabel}> Calidad del servicio o producto</Text>
-      <AirbnbRating 
+      <AirbnbRating
         count={5}
         reviews={['Baja', 'Deficiente', 'Normal', 'Muy Bueno', 'Excelente']}
         defaultRating={5}
         size={35}
-        onFinishRating={value =>setRating(value)}
+        onFinishRating={value => setRating(value)}
       />
-       <Text style={styles.txtLabel}> Cargar imágenes</Text>
-       <SubirImagenes imagenes={imagenes} setImagenes={setImagenes}/>
-       <Text style={styles.txtLabel}> Asignar categoria</Text>
-       <Botoneras categoria={categoria} setCategoria={setCategoria} />
-       <Button 
+      <Text style={styles.txtLabel}> Cargar imágenes</Text>
+      <SubirImagenes imagenes={imagenes} setImagenes={setImagenes} />
+      <Text style={styles.txtLabel}> Asignar categoria</Text>
+      <Botoneras categoria={categoria} setCategoria={setCategoria} />
+      <Button
         title='Agregar nuevo producto'
         buttonStyle={styles.btnAddNew}
         ref={btnRef}
         onPress={addProducto}
-       />
-       <Loading isVisible={loading} text='favor espere'/>
+      />
+      <Loading isVisible={loading} text='favor espere' />
     </KeyboardAwareScrollView>
   )
 }
 
 //Nuevo componente para subir imagenes
 
-function SubirImagenes ({imagenes, setImagenes}) {
+function SubirImagenes({ imagenes, setImagenes }) {
 
-  const removerImagen = (imagen) => { 
-    Alert.alert( 
-      'Eliminar imagen', 
+  const removerImagen = (imagen) => {
+    Alert.alert(
+      'Eliminar imagen',
       '¿Estás seguro de que quieres eliminar la imagen ?',
       [
         {
@@ -172,9 +172,9 @@ function SubirImagenes ({imagenes, setImagenes}) {
           style: 'cancel'
         },
         {
-          text:'Eliminar',
-          onPress: () =>{
-            setImagenes(filter(imagenes,  imagenURL  => imagenURL !== imagen))
+          text: 'Eliminar',
+          onPress: () => {
+            setImagenes(filter(imagenes, imagenURL => imagenURL !== imagen))
           }
         }
       ]
@@ -182,21 +182,21 @@ function SubirImagenes ({imagenes, setImagenes}) {
   }
 
   return (
-    <ScrollView 
+    <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       style={styles.viewImage}
     >
       {
         size(imagenes) < 5 && (
-          <Icon 
+          <Icon
             name='plus'
             type='material-community'
             color='#7a7a7a'
             containerStyle={styles.containerIcon}
             onPress={async (imagen) => {
-              const resultado = await cargarImagenesxAspecto([1,1])
-              if(resultado.status){
+              const resultado = await cargarImagenesxAspecto([1, 1])
+              if (resultado.status) {
                 setImagenes([...imagenes, resultado.imagen])
               }
             }}
@@ -204,30 +204,30 @@ function SubirImagenes ({imagenes, setImagenes}) {
         )
       }
       {
-        map(imagenes, (imagen, index)=> (
-          <Avatar 
+        map(imagenes, (imagen, index) => (
+          <Avatar
             key={index}
             style={styles.miniatura}
-            source={{uri: imagen}}
-            onPress={()=> {
+            source={{ uri: imagen }}
+            onPress={() => {
               removerImagen(imagen)
             }}
           />
-       ))
+        ))
       }
-      
+
     </ScrollView>
   )
 }
 
 // componente de Categorias
 
-function Botoneras ({ categoria, setCategoria}) {
+function Botoneras({ categoria, setCategoria }) {
   return (
     <View style={styles.botonera}>
       <TouchableOpacity
         style={styles.btnCategoria}
-        onPress={()=>setCategoria('libros')}
+        onPress={() => setCategoria('libros')}
       >
         <Icon
           type='material-community'
@@ -235,12 +235,12 @@ function Botoneras ({ categoria, setCategoria}) {
           size={24}
           color={categoria === 'libros' ? '#125C7E' : '#757575'}
           reverse
-        /> 
+        />
         <Text>Libros</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCategoria}
-        onPress={()=>setCategoria('ideas')}
+        onPress={() => setCategoria('ideas')}
       >
         <Icon
           type='material-community'
@@ -248,12 +248,12 @@ function Botoneras ({ categoria, setCategoria}) {
           size={24}
           color={categoria === 'ideas' ? '#125C7E' : '#757575'}
           reverse
-        /> 
+        />
         <Text>Ideas</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCategoria}
-        onPress={()=>setCategoria('articulos')}
+        onPress={() => setCategoria('articulos')}
       >
         <Icon
           type='material-community'
@@ -261,12 +261,12 @@ function Botoneras ({ categoria, setCategoria}) {
           size={24}
           color={categoria === 'articulos' ? '#125C7E' : '#757575'}
           reverse
-        /> 
+        />
         <Text>Artículos</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCategoria}
-        onPress={()=>setCategoria('servicios')}
+        onPress={() => setCategoria('servicios')}
       >
         <Icon
           type='material-community'
@@ -274,7 +274,7 @@ function Botoneras ({ categoria, setCategoria}) {
           size={24}
           color={categoria === 'servicios' ? '#125C7E' : '#757575'}
           reverse
-        /> 
+        />
         <Text>Servicios</Text>
       </TouchableOpacity>
     </View>
@@ -290,22 +290,22 @@ const styles = StyleSheet.create({
     padding: 5,
     elevation: 3
   },
-  input:{
+  input: {
     width: '90%',
-    borderRadius:10,
-    borderColor:'#707070',
-    marginTop: 20, 
+    borderRadius: 10,
+    borderColor: '#707070',
+    marginTop: 20,
     marginHorizontal: 20,
     height: 50
   },
-  textarea:{
+  textarea: {
     height: 150
   },
   txtLabel: {
-    fontSize: 20, 
+    fontSize: 20,
     textAlign: 'center',
     fontWeight: 'bold',
-    color:'#075E54'
+    color: '#075E54'
   },
   btnAddNew: {
     backgroundColor: '#128C7E',
@@ -315,11 +315,11 @@ const styles = StyleSheet.create({
   },
   viewImage: {
     flexDirection: 'row',
-    marginHorizontal: 20, 
-    marginTop: 30, 
+    marginHorizontal: 20,
+    marginTop: 30,
     marginBottom: 10
   },
-  containerIcon: {
+  containerIcon: {
     alignContent: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -328,12 +328,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#E3E3E3',
     padding: 10
   },
-  miniatura:{
+  miniatura: {
     width: 100,
     height: 150,
     marginRight: 10
   },
-  botonera:{
+  botonera: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around'
